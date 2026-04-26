@@ -33,7 +33,7 @@ bazel test //tests/...
 ```
 Run with sanitizers:
 ```bash
-bazel test //tests/... --config=tsan|asan
+bazel test //tests/... --config=tsan|asan|ubsan
 ```
 
 ### Run benchmarks
