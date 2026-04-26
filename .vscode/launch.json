@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug Example",
+      "program": "${workspaceFolder}/bazel-bin/examples/example",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "build example gdb",
+      "sourceMap": {
+        "/proc/self/cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug Tests",
+      "program": "${workspaceFolder}/bazel-bin/tests/thread_pool_test",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "build tests gdb",
+      "sourceMap": {
+        "/proc/self/cwd": "${workspaceFolder}"
+      }
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "name": "c++ thread_pool",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "llvm-vs-code-extensions.vscode-clangd",
+        "vadimcn.vscode-lldb",
+        "bazelbuild.vscode-bazel",
+        "ms-vscode.cpptools-themes",
+        "redhat.vscode-yaml",
+        "KevinRose.vsc-python-indent",
+        "mgesbert.python-path"
+      ],
+      "settings": {
+        "C_Cpp.intelliSenseEngine": "disabled",
+        "clangd.arguments": [
+          "--background-index",
+          "--compile-commands-dir=${workspaceFolder}",
+          "--clang-tidy",
+          "--completion-style=detailed",
+          "--header-insertion=iwyu",
+          "--fallback-style=Google",
+          "--query-driver=/**/*"
+        ],
+        "editor.formatOnSave": true,
+        "files.insertFinalNewline": true,
+        "files.trimFinalNewlines": true,
+        "[cpp]": {
+          "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+        },
+        "[c]": {
+          "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+        },
+        "[starlark]": {
+          "editor.defaultFormatter": "BazelBuild.vscode-bazel"
+        },
+        "files.exclude": {
+          "**/compile_commands.json": true,
+          "**/bazel-*": true,
+          "**/external": true
+        }
+      }
+    }
+  },
+  "remoteUser": "vscode"
+}
