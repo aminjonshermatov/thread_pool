@@ -26,10 +26,14 @@ Ensures the core code compiles successfully:
 bazel build //:thread_pool
 ```
 
-### Run unit tests
+### Run tests
 Runs all tests in the project:
 ```bash
 bazel test //tests/...
+```
+Run with sanitizers:
+```bash
+bazel test //tests/... --config=tsan|asan
 ```
 
 ### Run benchmarks

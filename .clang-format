@@ -7,3 +7,6 @@ NamespaceIndentation: None
 KeepEmptyLinesAtTheStartOfBlocks: true
 MaxEmptyLinesToKeep: 1
 FixNamespaceComments: true
+SpaceInEmptyBlock: true
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortBlocksOnASingleLine: Empty

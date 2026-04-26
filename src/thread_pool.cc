@@ -2,8 +2,10 @@
 
 namespace tp {
 
-ThreadPool::ThreadPool(int workers) : WorkerCount_(workers) {}
+ThreadPool::ThreadPool(int workers) : WorkerCount_(workers) { }
 
-auto ThreadPool::GetWorkerCount() const -> int { return WorkerCount_; }
+auto ThreadPool::GetWorkerCount() const -> int {
+  return WorkerCount_;
+}
 
 }  // namespace tp

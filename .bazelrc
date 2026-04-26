@@ -1,3 +1,5 @@
+build --linkopt=-fuse-ld=lld
+
 build --action_env=CC=clang
 build --action_env=CXX=clang++
 
@@ -5,3 +7,30 @@ build --cxxopt=-std=c++23
 build --host_cxxopt=-std=c++23
 
 build --cxxopt=-Wno-builtin-macro-redefined
+
+
+build:sanitizer_common --strip=never
+build:sanitizer_common --copt=-fno-omit-frame-pointer
+build:sanitizer_common --copt=-g
+build:sanitizer_common --copt=-O1
+build:sanitizer_common --test_env=ASAN_SYMBOLIZER_PATH=/usr/lib/llvm-18/bin/llvm-symbolizer
+build:sanitizer_common --test_env=TSAN_SYMBOLIZER_PATH=/usr/lib/llvm-18/bin/llvm-symbolizer
+build:sanitizer_common --test_env=UBSAN_SYMBOLIZER_PATH=/usr/lib/llvm-18/bin/llvm-symbolizer
+
+build:asan --config=sanitizer_common
+build:asan --copt=-fsanitize=address,undefined
+build:asan --copt=-fno-sanitize=vptr
+build:asan --linkopt=-fsanitize=address,undefined
+build:asan --test_env=ASAN_OPTIONS=color=always:symbolize=1
+
+build:tsan --config=sanitizer_common
+build:tsan --copt=-O2
+build:tsan --copt=-fsanitize=thread
+build:tsan --linkopt=-fsanitize=thread
+build:tsan --test_env=TSAN_OPTIONS=color=always:symbolize=1
+
+build:ubsan --config=sanitizer_common
+build:ubsan --copt=-fsanitize=undefined
+build:ubsan --copt=-fno-sanitize=vptr
+build:ubsan --linkopt=-fsanitize=undefined
+build:ubsan --test_env=UBSAN_OPTIONS=halt_on_error=1:color=always:symbolize=1

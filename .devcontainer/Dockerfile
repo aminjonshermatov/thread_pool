@@ -4,7 +4,9 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
   && apt-get -y install --no-install-recommends \
   clang \
   clangd \
+  lld \
   lldb \
+  llvm-18 \
   clang-format \
   clang-tidy \
   python3 \

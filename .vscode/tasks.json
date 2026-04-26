@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "🔄 Refresh Clangd",
+      "label": "Refresh Clangd",
       "type": "shell",
       "command": "./tools/update_compdb.sh",
       "group": {
@@ -26,6 +26,27 @@
       "label": "build tests gdb",
       "type": "shell",
       "command": "bazel build //tests:thread_pool_test -c dbg --fission=no --strip=never",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "build tests tsan",
+      "type": "shell",
+      "command": "bazel test //tests/... --config=tsan --test_output=errors",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "build tests asan",
+      "type": "shell",
+      "command": "bazel test //tests/... --config=asan --test_output=errors",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "build tests ubsan",
+      "type": "shell",
+      "command": "bazel test //tests/... --config=ubsan --test_output=errors",
       "group": "build",
       "problemMatcher": []
     }
