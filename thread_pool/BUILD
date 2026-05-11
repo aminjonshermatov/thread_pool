@@ -12,7 +12,6 @@ cc_library(
     "//thread_pool/base:base",
     "//thread_pool/concurrent_queue:concurrent_queue",
   ],
-  defines = ["TP_NAMESPACE_NAME=thread_pool"], 
 )
 
 cc_test(

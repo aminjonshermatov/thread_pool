@@ -6,4 +6,5 @@ cc_binary(
   deps = [
     "//thread_pool:thread_pool",
   ],
+  defines = ["TP_NAMESPACE_NAME=thread_pool"],
 )

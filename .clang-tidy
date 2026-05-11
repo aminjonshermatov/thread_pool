@@ -1,6 +1,5 @@
 Checks: '-*,bugprone-*,modernize-*,performance-*,readability-*'
 
-# ВАЖНО: Превращаем все сработавшие проверки (кроме дефолтных ворнингов Clang) в ОШИБКИ
 WarningsAsErrors: '*'
 
 CheckOptions:
