@@ -2,9 +2,12 @@ load("@rules_cc//cc:defs.bzl", "cc_library", "cc_binary", "cc_test")
 
 cc_library(
   name = "queue",
-  hdrs = ["queue.hpp"],
-  srcs = ["queue.cpp"],
-  visibility = ["//thread_pool:__pkg__"],
+  hdrs = [
+    "queue.hpp",
+    "queue-inl.hpp",
+  ],
+  visibility = ["//thread_pool:__subpackages__"],
+  deps = ["//thread_pool/base:base"],
 )
 
 cc_test(

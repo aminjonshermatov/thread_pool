@@ -1,8 +1,8 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary")
 
 cc_binary(
-  name = "example",
-  srcs = ["example_main.cc"],
+  name = "basic",
+  srcs = ["basic.cpp"],
   deps = [
     "//thread_pool:thread_pool",
   ],

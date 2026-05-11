@@ -40,7 +40,7 @@ bazel run //thread_pool:thread_pool_bench -c opt
 ### Run examples
 Build and execute the example code:
 ```bash
-bazel run //examples:example
+bazel run //examples:basic
 ```
 
 ## For Developers (VS Code + Clangd)

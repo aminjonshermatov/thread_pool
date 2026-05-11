@@ -2,7 +2,11 @@
 
 #include <gtest/gtest.h>
 
-TEST(NonBlockingQueue, Fuck) {
-  tp::Deque dq;
-  EXPECT_EQ(dq.Fuck(), 69);
+using namespace TP_NAMESPACE;
+
+TEST(NonBlockingQueue, Size) {
+  constexpr std::size_t kCapacity = 100UZ;
+  using Task = std::move_only_function<void()>;
+  non_blocking::Queue<Task> queue(kCapacity);
+  EXPECT_EQ(queue.Size(), 0UZ);
 }

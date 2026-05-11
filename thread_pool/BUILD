@@ -2,13 +2,17 @@ load("@rules_cc//cc:defs.bzl", "cc_library", "cc_binary", "cc_test")
 
 cc_library(
   name = "thread_pool",
-  hdrs = ["thread_pool.hpp"],
-  srcs = ["thread_pool.cpp"],
+  hdrs = [
+    "thread_pool.hpp",
+    "thread_pool-inl.hpp",
+    "task.hpp",
+  ],
   visibility = ["//visibility:public"],
   deps = [
-    "//thread_pool/concurrent_queue/blocking_queue:queue",
-    "//thread_pool/concurrent_queue/non_blocking_queue:queue",
-  ]
+    "//thread_pool/base:base",
+    "//thread_pool/concurrent_queue:concurrent_queue",
+  ],
+  defines = ["TP_NAMESPACE_NAME=thread_pool"], 
 )
 
 cc_test(

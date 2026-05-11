@@ -10,10 +10,12 @@ WORKSPACE=$(pwd)
 cd "$OUTPUT_BASE/external"
 for dir in *; do
   if [[ "$dir" == *"~"* ]]; then
-    # Берем имя до первой тильды (например, googletest из googletest~1.14.0)
     base_name="${dir%%~*}"
-    # Создаем симлинк (googletest~ -> googletest~1.14.0)
-    ln -sf "$dir" "${base_name}~" 2>/dev/null || true
+    target_name="${base_name}~"
+
+    if [[ "$dir" != "$target_name" ]]; then
+      ln -sf "$dir" "$target_name" 2>/dev/null || true
+    fi
   fi
 done
 cd "$WORKSPACE"

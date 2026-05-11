@@ -1,17 +1,31 @@
 #pragma once
 
-namespace tp {
+#include "thread_pool/base/config.hpp"
+#include "thread_pool/concurrent_queue/blocking_queue/queue.hpp"
+#include "thread_pool/concurrent_queue/non_blocking_queue/queue.hpp"
+#include "thread_pool/concurrent_queue/queue_concept.hpp"
 
-class Deque;
+#include "task.hpp"
 
-class ThreadPool {
+TP_NAMESPACE_BEGIN
+
+template <ConcurrentQueue<Task> Queue>
+class ThreadPoolImpl {
  public:
-  ThreadPool(int workers = 4);
-  [[nodiscard]] auto GetWorkerCount() const -> int;
+  ThreadPoolImpl(std::size_t workersCount);
+
+  TP_NODISCARD auto GetWorkerCount() const -> std::size_t;
 
  private:
-  int WorkerCount_;
-  Deque* Deque_;
+  std::size_t WorkerCount_;
+  Queue Queue_;
 };
 
-}  // namespace tp
+using BlockingThreadPool = ThreadPoolImpl<blocking::Queue<Task>>;
+using NonBlockingThreadPool = ThreadPoolImpl<non_blocking::Queue<Task>>;
+
+using ThreadPool = NonBlockingThreadPool;
+
+TP_NAMESPACE_END
+
+#include "thread_pool/thread_pool-inl.hpp"

@@ -1,38 +1,24 @@
-Checks: "-*,bugprone-*,modernize-*,performance-*,readability-*"
+Checks: '-*,bugprone-*,modernize-*,performance-*,readability-*'
+
+# ВАЖНО: Превращаем все сработавшие проверки (кроме дефолтных ворнингов Clang) в ОШИБКИ
+WarningsAsErrors: '*'
 
 CheckOptions:
-  - key: readability-identifier-naming.NamespaceCase
-    # value:           CamelCase
-    value: lower_case
-
-  - key: readability-identifier-naming.ClassCase
-    value: CamelCase
-  - key: readability-identifier-naming.StructCase
-    value: CamelCase
-
-  - key: readability-identifier-naming.FunctionCase
-    value: CamelCase
-  - key: readability-identifier-naming.MethodCase
-    value: CamelCase
-
-  - key: readability-identifier-naming.VariableCase
-    value: camelBack
-
-  - key: readability-identifier-naming.ParameterCase
-    value: camelBack
-
-  - key: readability-identifier-naming.MemberCase
-    value: camelBack
-
-  - key: readability-identifier-naming.PublicMemberCase
-    value: CamelCase
-
-  - key: readability-identifier-naming.PrivateMemberCase
-    value: CamelCase
-  - key: readability-identifier-naming.PrivateMemberSuffix
-    value: "_"
-
-  - key: readability-identifier-naming.ProtectedMemberCase
-    value: CamelCase
-  - key: readability-identifier-naming.ProtectedMemberSuffix
-    value: "_"
+  readability-identifier-naming.NamespaceCase: lower_case
+  readability-identifier-naming.ClassCase: CamelCase
+  readability-identifier-naming.StructCase: CamelCase
+  readability-identifier-naming.FunctionCase: CamelCase
+  readability-identifier-naming.MethodCase: CamelCase
+  readability-identifier-naming.VariableCase: camelBack
+  readability-identifier-naming.ParameterCase: camelBack
+  readability-identifier-naming.MemberCase: camelBack
+  readability-identifier-naming.PublicMemberCase: CamelCase
+  
+  readability-identifier-naming.PrivateMemberCase: CamelCase
+  readability-identifier-naming.PrivateMemberSuffix: '_'
+  
+  readability-identifier-naming.ProtectedMemberCase: CamelCase
+  readability-identifier-naming.ProtectedMemberSuffix: '_'
+  
+  readability-identifier-naming.ConstexprVariableCase: CamelCase
+  readability-identifier-naming.ConstexprVariablePrefix: 'k'

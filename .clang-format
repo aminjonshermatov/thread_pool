@@ -10,3 +10,16 @@ FixNamespaceComments: true
 SpaceInEmptyBlock: true
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortBlocksOnASingleLine: Empty
+
+IncludeBlocks: Regroup
+
+IncludeIsMainRegex: '(_test|_bench)?$'
+IncludeCategories:
+  - Regex:           '^<(gtest|gmock|benchmark)/'
+    Priority:        4
+  - Regex:           '^<.*\.h>'
+    Priority:        2
+  - Regex:           '^<.*'
+    Priority:        3
+  - Regex:           '^"thread_pool/'
+    Priority:        5

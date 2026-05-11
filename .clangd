@@ -1,0 +1,7 @@
+If:
+  PathMatch: .*-inl\.hpp
+
+Diagnostics:
+  Suppress: "*"
+
+---
