@@ -9,11 +9,6 @@ The project is built using [Bazel](https://bazel.build/). All third-party depend
 * **Google Test** (for unit testing)
 * **Google Benchmark** (for performance measuring)
 
-## Project Structure
-
-* `include/` & `src/` — the core library code.
-* `tests/` — unit tests.
-* `benchmarks/` — microbenchmarks.
 * `examples/` — usage examples.
 
 ## How to Build and Run
@@ -23,23 +18,23 @@ Everything is managed via `bazel` commands. Run them from the repository root.
 ### Build the library
 Ensures the core code compiles successfully:
 ```bash
-bazel build //:thread_pool
+bazel build //thread_pool:thread_pool
 ```
 
 ### Run tests
 Runs all tests in the project:
 ```bash
-bazel test //tests/...
+bazel test //...
 ```
 Run with sanitizers:
 ```bash
-bazel test //tests/... --config=tsan|asan|ubsan
+bazel test //... --config=tsan|asan|ubsan
 ```
 
 ### Run benchmarks
 <i>Always run benchmarks with the maximum optimization flag (-c opt), otherwise the results will be inaccurate.</i>
 ```bash
-bazel run //benchmarks:thread_pool_bench -c opt
+bazel run //thread_pool:thread_pool_bench -c opt
 ```
 
 ### Run examples

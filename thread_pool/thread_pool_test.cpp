@@ -4,5 +4,5 @@
 
 TEST(ThreadPoolTest, ReturnsCorrectWorkerCount) {
   tp::ThreadPool pool;
-  EXPECT_EQ(pool.GetWorkerCount(), 4);
+  EXPECT_EQ(pool.GetWorkerCount(), 83);
 }

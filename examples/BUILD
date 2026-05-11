@@ -4,6 +4,6 @@ cc_binary(
   name = "example",
   srcs = ["example_main.cc"],
   deps = [
-    "//:thread_pool",
+    "//thread_pool:thread_pool",
   ],
 )

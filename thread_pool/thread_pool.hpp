@@ -2,6 +2,8 @@
 
 namespace tp {
 
+class Deque;
+
 class ThreadPool {
  public:
   ThreadPool(int workers = 4);
@@ -9,6 +11,7 @@ class ThreadPool {
 
  private:
   int WorkerCount_;
+  Deque* Deque_;
 };
 
 }  // namespace tp
