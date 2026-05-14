@@ -9,11 +9,10 @@
 TP_NAMESPACE_BEGIN
 namespace bounded {
 
-template <typename Task>
+template <typename Task, std::size_t LogSize = LOG_SIZE>
 class Queue {
  public:
   Queue() = default;
-  Queue(std::size_t capacity);
 
   auto Push(Task&& task) -> void;
   TP_NODISCARD auto Pop() -> std::optional<Task>;

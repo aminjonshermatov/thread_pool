@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <new>
 
 namespace detail {
@@ -10,6 +11,16 @@ inline constexpr std::size_t kCacheLineSize = std::hardware_destructive_interfer
 inline constexpr std::size_t kCacheLineSize = 64UZ;
 #endif
 
+inline constexpr std::size_t kLogSize = 20UZ;
+
 }  // namespace detail
 
 #define CACHELINE_ALIGNED alignas(detail::kCacheLineSize)
+
+#ifndef LOG_SIZE
+#define LOG_SIZE detail::kLogSize
+#endif
+
+#define CONFIG_IN
+#include "thread_pool/base/config.hpp.in"
+#undef CONFIG_IN

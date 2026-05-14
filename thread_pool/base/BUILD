@@ -8,12 +8,6 @@ cc_library(
 )
 
 cc_library(
-  name = "cacheline",
-  hdrs = ["cacheline.hpp"],
-  visibility = ["//visibility:public"],
-)
-
-cc_library(
   name = "thread_annotations",
   hdrs = ["thread_annotations.hpp"],
   visibility = ["//visibility:public"],
@@ -26,15 +20,14 @@ cc_library(
 )
 
 genrule(
-  name = "generate_config",
+  name = "generate_version",
   srcs = ["//:MODULE.bazel"],
-  outs = ["config.hpp"],
+  outs = ["config.hpp.in"],
   cmd = """
     RAW_VERSION=$$(sed -n 's/.*version = "\\([^\\"]*\\)".*/\\1/p' $< | head -n 1)
     NS_VERSION=$$(echo $$RAW_VERSION | tr '.' '_')
 
-    echo "#pragma once" > $@
-    echo "" >> $@
+    echo "// Auto-generated, do not edit" > $@
     echo "#define TP_VERSION_STR \\"$$RAW_VERSION\\"" >> $@
     echo "" >> $@
 
@@ -56,7 +49,10 @@ genrule(
 
 cc_library(
   name = "config",
-  hdrs = ["config.hpp"],
+  hdrs = [
+    "config.hpp",
+    "config.hpp.in"
+  ],
   visibility = ["//visibility:public"],
 )
 
@@ -64,7 +60,6 @@ cc_library(
   name = "base",
   deps = [
     ":assert",
-    ":cacheline",
     ":config",
     ":compiler_traits",
     ":thread_annotations",
