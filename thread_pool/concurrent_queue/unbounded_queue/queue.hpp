@@ -7,7 +7,7 @@
 #include "thread_pool/base/config.hpp"
 
 TP_NAMESPACE_BEGIN
-namespace non_blocking {
+namespace unbounded {
 
 template <typename Task>
 class Queue {
@@ -25,7 +25,9 @@ class Queue {
   std::size_t Capacity_ = 0U;
 };
 
-}  // namespace non_blocking
+}  // namespace unbounded
 TP_NAMESPACE_END
 
-#include "thread_pool/concurrent_queue/non_blocking_queue/queue-inl.hpp"
+#define UNBOUNDED_QUEUE_INL
+#include "thread_pool/concurrent_queue/unbounded_queue/queue-inl.hpp"
+#undef UNBOUNDED_QUEUE_INL

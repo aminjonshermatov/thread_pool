@@ -7,7 +7,7 @@
 #include "thread_pool/base/config.hpp"
 
 TP_NAMESPACE_BEGIN
-namespace blocking {
+namespace bounded {
 
 template <typename Task>
 class Queue {
@@ -25,7 +25,9 @@ class Queue {
   std::size_t Capacity_ = 0U;
 };
 
-}  // namespace blocking
+}  // namespace bounded
 TP_NAMESPACE_END
 
-#include "thread_pool/concurrent_queue/blocking_queue/queue-inl.hpp"
+#define BOUNDED_QUEUE_INL
+#include "thread_pool/concurrent_queue/bounded_queue/queue-inl.hpp"
+#undef BOUNDED_QUEUE_INL

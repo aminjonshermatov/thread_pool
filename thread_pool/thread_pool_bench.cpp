@@ -4,21 +4,21 @@
 
 using namespace TP_NAMESPACE;
 
-static void BMBlockingThreadPool(benchmark::State& state) {
+static void BMBoundedThreadPool(benchmark::State& state) {
   constexpr std::size_t kWorkersCount = 10UZ;
-  BlockingThreadPool pool(kWorkersCount);
+  BoundedThreadPool pool(kWorkersCount);
   for (TP_MAYBE_UNUSED auto _ : state) {  // NOLINT(readability-identifier-length)
     benchmark::DoNotOptimize(pool.GetWorkerCount());
   }
 }
 
-static void BMNonBlockingThreadPool(benchmark::State& state) {
+static void BMUnBoundedThreadPool(benchmark::State& state) {
   constexpr std::size_t kWorkersCount = 10UZ;
-  NonBlockingThreadPool pool(kWorkersCount);
+  UnBoundedThreadPool pool(kWorkersCount);
   for (TP_MAYBE_UNUSED auto _ : state) {  // NOLINT(readability-identifier-length)
     benchmark::DoNotOptimize(pool.GetWorkerCount());
   }
 }
 
-BENCHMARK(BMBlockingThreadPool);
-BENCHMARK(BMNonBlockingThreadPool);
+BENCHMARK(BMBoundedThreadPool);
+BENCHMARK(BMUnBoundedThreadPool);

@@ -9,8 +9,8 @@ cc_library(
   name = "concurrent_queue",
   deps = [
     ":queue_concept",
-    "//thread_pool/concurrent_queue/blocking_queue:queue",
-    "//thread_pool/concurrent_queue/non_blocking_queue:queue",
+    "//thread_pool/concurrent_queue/bounded_queue:queue",
+    "//thread_pool/concurrent_queue/unbounded_queue:queue",
   ],
   visibility = ["//thread_pool:__pkg__"],
 )

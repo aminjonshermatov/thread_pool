@@ -1,7 +1,11 @@
-#pragma once
+#ifndef BOUNDED_QUEUE_INL
+#error "Direct inclusion of this file is not allowed, include queue.hpp"
+// For the sake of sane code completion.
+#include "queue.hpp"
+#endif
 
 TP_NAMESPACE_BEGIN
-namespace non_blocking {
+namespace bounded {
 
 template <typename Task>
 Queue<Task>::Queue(std::size_t capacity) : Capacity_(capacity) { }
@@ -19,5 +23,5 @@ auto Queue<Task>::Size() const -> std::size_t {
   return 0UZ;
 }
 
-}  // namespace non_blocking
+}  // namespace bounded
 TP_NAMESPACE_END

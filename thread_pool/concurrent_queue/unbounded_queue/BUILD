@@ -14,7 +14,7 @@ cc_test(
   name = "queue_test",
   srcs = ["queue_test.cpp"],
   deps = [
-    "//thread_pool/concurrent_queue/non_blocking_queue:queue", 
+    "//thread_pool/concurrent_queue/unbounded_queue:queue", 
     "@googletest//:gtest_main",
   ],
 )
@@ -23,7 +23,7 @@ cc_binary(
   name = "queue_bench",
   srcs = ["queue_bench.cpp"],
   deps = [
-    "//thread_pool/concurrent_queue/non_blocking_queue:queue", 
+    "//thread_pool/concurrent_queue/unbounded_queue:queue", 
     "@google_benchmark//:benchmark_main",
   ],
 )

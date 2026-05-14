@@ -12,15 +12,15 @@ TEST(DefaultThreadPoolTest, ReturnsCorrectWorkerCount) {
   EXPECT_EQ(pool.GetWorkerCount(), kWorkersCount);
 }
 
-TEST(BlockingThreadPoolTest, ReturnsCorrectWorkerCount) {
+TEST(BoundedThreadPoolTest, ReturnsCorrectWorkerCount) {
   constexpr std::size_t kWorkersCount = 10UZ;
-  BlockingThreadPool pool(kWorkersCount);
+  BoundedThreadPool pool(kWorkersCount);
   EXPECT_EQ(pool.GetWorkerCount(), kWorkersCount);
 }
 
-TEST(NonBlockingThreadPoolTest, ReturnsCorrectWorkerCount) {
+TEST(UnBoundedThreadPoolTest, ReturnsCorrectWorkerCount) {
   constexpr std::size_t kWorkersCount = 10UZ;
-  NonBlockingThreadPool pool(kWorkersCount);
+  UnBoundedThreadPool pool(kWorkersCount);
   EXPECT_EQ(pool.GetWorkerCount(), kWorkersCount);
 }
 

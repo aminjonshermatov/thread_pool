@@ -1,4 +1,8 @@
-#pragma once
+#ifndef THREAD_POOL_INL
+#error "Direct inclusion of this file is not allowed, include thread_pool.hpp"
+// For the sake of sane code completion.
+#include "thread_pool.hpp"
+#endif
 
 TP_NAMESPACE_BEGIN
 

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "thread_pool/base/config.hpp"
-#include "thread_pool/concurrent_queue/blocking_queue/queue.hpp"
-#include "thread_pool/concurrent_queue/non_blocking_queue/queue.hpp"
+#include "thread_pool/concurrent_queue/bounded_queue/queue.hpp"
 #include "thread_pool/concurrent_queue/queue_concept.hpp"
+#include "thread_pool/concurrent_queue/unbounded_queue/queue.hpp"
 
 #include "task.hpp"
 
@@ -21,11 +21,13 @@ class ThreadPoolImpl {
   Queue Queue_;
 };
 
-using BlockingThreadPool = ThreadPoolImpl<blocking::Queue<Task>>;
-using NonBlockingThreadPool = ThreadPoolImpl<non_blocking::Queue<Task>>;
+using BoundedThreadPool = ThreadPoolImpl<bounded::Queue<Task>>;
+using UnBoundedThreadPool = ThreadPoolImpl<unbounded::Queue<Task>>;
 
-using ThreadPool = NonBlockingThreadPool;
+using ThreadPool = BoundedThreadPool;
 
 TP_NAMESPACE_END
 
+#define THREAD_POOL_INL
 #include "thread_pool/thread_pool-inl.hpp"
+#undef THREAD_POOL_INL

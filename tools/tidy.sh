@@ -6,7 +6,6 @@ echo "Running clang-tidy..."
 FILES=$(find . -type d -name "bazel-*" -prune -o \
   -type f \( -name "*.cpp" -o -name "*.hpp" -o -name "*.cc" -o -name "*.h" \) \
   ! -name "*-inl.hpp" \
-  ! -name "*_inl.hpp" \
   -print)
 
 if [ -z "$FILES" ]; then
