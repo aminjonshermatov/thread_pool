@@ -5,8 +5,7 @@
 using namespace TP_NAMESPACE;
 
 TEST(UnboundedQueue, Size) {
-  constexpr std::size_t kCapacity = 100UZ;
   using Task = std::move_only_function<void()>;
-  unbounded::Queue<Task> queue(kCapacity);
+  unbounded::Queue<Task> queue;
   EXPECT_EQ(queue.Size(), 0UZ);
 }

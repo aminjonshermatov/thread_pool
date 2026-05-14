@@ -1,4 +1,4 @@
-Checks: '-*,bugprone-*,modernize-*,performance-*,readability-*'
+Checks: '-*,bugprone-*,modernize-*,performance-*,readability-*,-readability-redundant-access-specifiers'
 
 WarningsAsErrors: '*'
 

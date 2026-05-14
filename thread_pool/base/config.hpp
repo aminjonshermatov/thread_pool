@@ -11,7 +11,7 @@ inline constexpr std::size_t kCacheLineSize = std::hardware_destructive_interfer
 inline constexpr std::size_t kCacheLineSize = 64UZ;
 #endif
 
-inline constexpr std::size_t kLogSize = 20UZ;
+inline constexpr std::size_t kLogSize = 10UZ;
 
 }  // namespace detail
 

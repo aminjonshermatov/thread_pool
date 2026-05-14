@@ -6,6 +6,6 @@ using namespace TP_NAMESPACE;
 
 TEST(BoundedQueue, Size) {
   using Task = std::move_only_function<void()>;
-  bounded::Queue<Task> queue{};
+  bounded::Queue<Task> queue;
   EXPECT_EQ(queue.Size(), 0UZ);
 }

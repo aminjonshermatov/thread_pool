@@ -7,8 +7,9 @@ TP_NAMESPACE_BEGIN
 
 template <typename T, typename Task>
 concept ConcurrentQueue = requires(T queue, Task task) {
-  { queue.Push(std::move(task)) } -> std::same_as<void>;
+  { queue.TryPush(std::move(task)) } -> std::same_as<bool>;
   { queue.Pop() } -> std::same_as<std::optional<Task>>;
+  { queue.Steal() } -> std::same_as<std::optional<Task>>;
 };
 
 TP_NAMESPACE_END
