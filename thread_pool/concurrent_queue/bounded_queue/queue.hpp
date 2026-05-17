@@ -45,8 +45,8 @@ class Queue {
   static constexpr std::size_t kBufferSize = 1UZ << kLogSize;
   static constexpr std::size_t kBufferMask = kBufferSize - 1;
 
-  CACHELINE_ALIGNED std::atomic<int64_t> Top_;
-  CACHELINE_ALIGNED std::atomic<int64_t> Bottom_;
+  CACHELINE_ALIGNED std::atomic<int64_t> Top_{0};
+  CACHELINE_ALIGNED std::atomic<int64_t> Bottom_{0};
 
   CACHELINE_ALIGNED std::array<T, kBufferSize> Buffer_;
 };

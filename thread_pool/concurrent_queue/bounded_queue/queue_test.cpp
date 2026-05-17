@@ -5,7 +5,6 @@
 #include <atomic>
 #include <barrier>
 #include <cstdint>
-#include <functional>
 #include <optional>
 #include <thread>
 #include <vector>
