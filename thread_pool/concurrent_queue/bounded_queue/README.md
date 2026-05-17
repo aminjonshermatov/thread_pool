@@ -1,3 +1,5 @@
+Chase, David, and Yossi Lev. "Dynamic circular work-stealing deque." Proceedings of the seventeenth annual ACM symposium on Parallelism in algorithms and architectures. 2005.
+
 ```bash
 bazel run //thread_pool/concurrent_queue/bounded_queue:queue_bench -c opt
 ```
