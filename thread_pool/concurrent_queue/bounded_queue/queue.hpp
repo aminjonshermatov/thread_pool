@@ -5,6 +5,7 @@
 #include <atomic>
 #include <cstdint>
 #include <optional>
+#include <type_traits>
 
 #include "thread_pool/base/compiler_traits.hpp"
 #include "thread_pool/base/config.hpp"
@@ -12,9 +13,9 @@
 TP_NAMESPACE_BEGIN
 namespace bounded {
 
-template <typename Task, std::size_t kLogSize>
+template <typename T, std::size_t kLogSize>
 class Queue {
-  static_assert(!std::is_pointer_v<Task>);
+  using ValueType = std::conditional_t<std::is_pointer_v<T>, T, std::optional<T>>;
 
  public:
   Queue() = default;
@@ -27,10 +28,14 @@ class Queue {
   TP_NODISCARD auto Size() const noexcept -> std::size_t;
   static constexpr auto Capacity() noexcept -> std::size_t;
 
-  auto TryPush(Task&& task) -> bool;
+  template <typename U>
+  auto TryPush(U&& item) -> bool;
 
-  auto Pop() -> std::optional<Task>;
-  auto Steal() -> std::optional<Task>;
+  auto Pop() -> ValueType;
+  auto Steal() -> ValueType;
+
+ private:
+  static constexpr auto EmptyValue() noexcept -> ValueType;
 
  private:
   // 2^x where x>30 more likely not OK
@@ -43,7 +48,7 @@ class Queue {
   CACHELINE_ALIGNED std::atomic<int64_t> Top_;
   CACHELINE_ALIGNED std::atomic<int64_t> Bottom_;
 
-  CACHELINE_ALIGNED std::array<std::atomic<Task*>, kBufferSize> Buffer_;
+  CACHELINE_ALIGNED std::array<T, kBufferSize> Buffer_;
 };
 
 }  // namespace bounded

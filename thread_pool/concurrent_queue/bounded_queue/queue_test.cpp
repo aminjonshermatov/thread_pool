@@ -5,109 +5,102 @@
 #include <atomic>
 #include <barrier>
 #include <cstdint>
+#include <functional>
+#include <optional>
 #include <thread>
 #include <vector>
 
 #include <gtest/gtest.h>
 
-#include "thread_pool/base/compiler_traits.hpp"
 #include "thread_pool/base/config.hpp"
 
 using namespace TP_NAMESPACE;
 
-using Task = std::move_only_function<void()>;
-
 TEST(BoundedQueueTests, Empty) {
-  bounded::Queue<Task, 1> queue;
-  ASSERT_FALSE(queue.Pop().has_value());
-  ASSERT_FALSE(queue.Steal().has_value());
+  bounded::Queue<int, 1> queue;
+  ASSERT_EQ(queue.Pop(), std::nullopt);
+  ASSERT_EQ(queue.Steal(), std::nullopt);
   ASSERT_TRUE(queue.Empty());
 }
 
 TEST(BoundedQueueTests, BasicPushPop) {
-  bounded::Queue<Task, 1> queue;
+  bounded::Queue<int*, 1> queue;
   ASSERT_TRUE(queue.Empty());
 
-  ASSERT_TRUE(queue.TryPush([] {}));
+  auto item = 1;
+  ASSERT_TRUE(queue.TryPush(&item));
   ASSERT_EQ(queue.Size(), 1UZ);
   ASSERT_FALSE(queue.Empty());
 
-  ASSERT_TRUE(queue.Pop());
+  ASSERT_EQ(queue.Pop(), &item);
   ASSERT_EQ(queue.Size(), 0UZ);
   ASSERT_TRUE(queue.Empty());
 }
 
 TEST(BoundedQueueTests, BasicPushSteal) {
-  bounded::Queue<Task, 1> queue;
+  bounded::Queue<int*, 1> queue;
   ASSERT_TRUE(queue.Empty());
 
-  ASSERT_TRUE(queue.TryPush([] {}));
+  auto item = 1;
+  ASSERT_TRUE(queue.TryPush(&item));
   ASSERT_EQ(queue.Size(), 1UZ);
   ASSERT_FALSE(queue.Empty());
 
-  ASSERT_TRUE(queue.Steal());
+  ASSERT_EQ(queue.Steal(), &item);
   ASSERT_EQ(queue.Size(), 0UZ);
   ASSERT_TRUE(queue.Empty());
 }
 
 TEST(BoundedQueueTests, Owerflow) {
-  bounded::Queue<Task, 1> queue;
+  bounded::Queue<int*, 1> queue;
   ASSERT_TRUE(queue.Empty());
 
-  ASSERT_TRUE(queue.TryPush([] {}));
+  auto item = 1;
+  ASSERT_TRUE(queue.TryPush(&item));
   ASSERT_EQ(queue.Size(), 1UZ);
 
-  ASSERT_TRUE(queue.TryPush([] {}));
+  ASSERT_TRUE(queue.TryPush(&item));
   ASSERT_EQ(queue.Size(), 2UZ);
 
-  ASSERT_FALSE(queue.TryPush([] {}));
+  ASSERT_FALSE(queue.TryPush(&item));
   ASSERT_EQ(queue.Size(), 2UZ);
 
-  ASSERT_TRUE(queue.Pop());
+  ASSERT_NE(queue.Pop(), nullptr);
   ASSERT_EQ(queue.Size(), 1UZ);
-  ASSERT_TRUE(queue.TryPush([] {}));
+  ASSERT_TRUE(queue.TryPush(&item));
   ASSERT_EQ(queue.Size(), 2UZ);
 
-  ASSERT_TRUE(queue.Pop());
-  ASSERT_TRUE(queue.Pop());
+  ASSERT_NE(queue.Pop(), nullptr);
+  ASSERT_NE(queue.Pop(), nullptr);
 }
 
 TEST(BoundedQueueTests, Orders) {
-  bounded::Queue<Task, 2> queue;
+  bounded::Queue<int*, 2> queue;
 
-  uint8_t done = 0;
-  ASSERT_TRUE(queue.TryPush([&] { done |= 1 << 0; }));
-  ASSERT_TRUE(queue.TryPush([&] { done |= 1 << 1; }));
-  ASSERT_TRUE(queue.TryPush([&] { done |= 1 << 2; }));
+  std::array items{1, 2, 3};
+  ASSERT_TRUE(queue.TryPush(&items[0]));  // NOLINT(readability-container-data-pointer)
+  ASSERT_TRUE(queue.TryPush(&items[1]));
+  ASSERT_TRUE(queue.TryPush(&items[2]));
 
   ASSERT_EQ(queue.Size(), 3);
 
-  queue.Pop().value()();
-  ASSERT_EQ(done, 0b100);
+  ASSERT_EQ(queue.Pop(), &items[2]);
   ASSERT_EQ(queue.Size(), 2);
 
-  queue.Steal().value()();
-  ASSERT_EQ(done, 0b101);
+  ASSERT_EQ(queue.Steal(), &items[0]);  // NOLINT(readability-container-data-pointer)
   ASSERT_EQ(queue.Size(), 1);
 
-  queue.Pop().value()();
-  ASSERT_EQ(done, 0b111);
+  ASSERT_EQ(queue.Pop(), &items[1]);
   ASSERT_TRUE(queue.Empty());
 }
 
 TEST(BoundedQueueTests, WrapAround) {
-  bounded::Queue<Task, 3> queue;
+  bounded::Queue<int, 3> queue;
 
   constexpr uint8_t kIters = 100U;
   for (auto iter = 0U; iter < kIters; ++iter) {
-    uint8_t val = kIters;
-    ASSERT_TRUE(queue.TryPush([&val, iter] { val = iter; }));
-    if (iter % 2 == 0U) {
-      queue.Pop().value()();
-    } else {
-      queue.Steal().value()();
-    }
-    ASSERT_EQ(val, iter);
+    ASSERT_TRUE(queue.TryPush(iter));
+    ASSERT_EQ(queue.Pop().value(), iter);
   }
 }
 
@@ -116,35 +109,32 @@ TEST(BoundedQueueTests, StressTestExactlyOnceExecution) {
   constexpr auto kThievesCount = 5UZ;
 
   constexpr auto kLogSize = 10UZ;
-  bounded::Queue<Task, kLogSize> queue;
+  bounded::Queue<int, kLogSize> queue;
 
   std::atomic<bool> producersDone{false};
 
   std::array<std::jthread, kThievesCount> thieves;
-  std::ranges::generate(thieves, [&producersDone, &queue] {
-    return std::jthread([&producersDone, &queue] {
+  std::vector<std::atomic<uint32_t>> results(kTaskCount);
+  std::ranges::generate(thieves, [&producersDone, &queue, &results] {
+    return std::jthread([&producersDone, &queue, &results] {
       while (!producersDone.load(std::memory_order::acquire)) {
-        if (auto task = queue.Steal()) {
-          (*task)();
+        if (auto taskId = queue.Steal()) {
+          results[taskId.value()].fetch_add(taskId.value(), std::memory_order::relaxed);
         } else {
           std::this_thread::yield();
         }
       }
-      while (auto task = queue.Steal()) {
-        (*task)();
+      while (auto taskId = queue.Steal()) {
+        results[taskId.value()].fetch_add(taskId.value(), std::memory_order::relaxed);
       }
     });
   });
 
-  std::vector<std::atomic<uint32_t>> results(kTaskCount);
   std::ranges::generate(results, [] { return 0U; });
   for (auto taskId = 0; taskId < kTaskCount; ++taskId) {
-    auto task = [taskId, &results] {
-      results[taskId].fetch_add(taskId, std::memory_order::relaxed);
-    };
-    while (!queue.TryPush(std::move(task))) {
-      if (auto localTask = queue.Pop()) {
-        (*localTask)();
+    while (!queue.TryPush(taskId)) {
+      if (auto localTaskId = queue.Pop()) {
+        results[localTaskId.value()].fetch_add(localTaskId.value(), std::memory_order::relaxed);
       }
     }
   }
@@ -167,18 +157,18 @@ TEST(BoundedQueueTests, RaceForLastElement) {
   std::atomic<int> popSuccess{0};
   std::atomic<int> stealSuccess{0};
 
-  bounded::Queue<Task, 2> queue;
-  queue.TryPush([] {});
+  bounded::Queue<bool, 2> queue;
+  queue.TryPush(true);
 
   std::jthread thief([&stealSuccess, &queue, &syncPoint] {
     syncPoint.arrive_and_wait();
-    if (TP_MAYBE_UNUSED auto task = queue.Steal()) {
+    if (TP_MAYBE_UNUSED auto item = queue.Steal()) {
       stealSuccess.fetch_add(1);
     }
   });
 
   syncPoint.arrive_and_wait();
-  if (TP_MAYBE_UNUSED auto task = queue.Pop()) {
+  if (TP_MAYBE_UNUSED auto item = queue.Pop()) {
     popSuccess.fetch_add(1);
   }
 
