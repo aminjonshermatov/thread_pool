@@ -21,8 +21,8 @@ class ThreadPoolImpl {
   Queue Queue_;
 };
 
-using BoundedThreadPool = ThreadPoolImpl<bounded::Queue<Task>>;
-using UnBoundedThreadPool = ThreadPoolImpl<unbounded::Queue<Task>>;
+using BoundedThreadPool = ThreadPoolImpl<bounded::Queue<Task, LOG_SIZE>>;
+using UnBoundedThreadPool = ThreadPoolImpl<unbounded::Queue<Task, LOG_SIZE>>;
 
 using ThreadPool = BoundedThreadPool;
 

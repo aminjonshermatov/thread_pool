@@ -12,7 +12,7 @@
 TP_NAMESPACE_BEGIN
 namespace bounded {
 
-template <typename Task, std::size_t kLogSize = LOG_SIZE>
+template <typename Task, std::size_t kLogSize>
 class Queue {
   static_assert(!std::is_pointer_v<Task>);
 

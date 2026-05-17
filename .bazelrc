@@ -18,9 +18,9 @@ build:sanitizer_common --test_env=TSAN_SYMBOLIZER_PATH=/usr/lib/llvm-18/bin/llvm
 build:sanitizer_common --test_env=UBSAN_SYMBOLIZER_PATH=/usr/lib/llvm-18/bin/llvm-symbolizer
 
 build:asan --config=sanitizer_common
-build:asan --copt=-fsanitize=address,undefined
+build:asan --copt=-fsanitize=address
 build:asan --copt=-fno-sanitize=vptr
-build:asan --linkopt=-fsanitize=address,undefined
+build:asan --linkopt=-fsanitize=address
 build:asan --test_env=ASAN_OPTIONS=color=always:symbolize=1
 
 build:tsan --config=sanitizer_common

@@ -2,10 +2,13 @@
 
 #include <gtest/gtest.h>
 
+#include "thread_pool/base/config.hpp"
+
 using namespace TP_NAMESPACE;
 
+using Task = std::move_only_function<void()>;
+
 TEST(UnboundedQueue, Size) {
-  using Task = std::move_only_function<void()>;
-  unbounded::Queue<Task> queue;
+  unbounded::Queue<Task, LOG_SIZE> queue;
   EXPECT_EQ(queue.Size(), 0UZ);
 }
