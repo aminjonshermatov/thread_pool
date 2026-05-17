@@ -8,6 +8,10 @@ build --host_cxxopt=-std=c++23
 
 build --cxxopt=-Wno-builtin-macro-redefined
 
+build:opt --copt=-O3
+build:opt --copt=-march=native
+build:opt --copt=-flto
+build:opt --linkopt=-flto
 
 build:sanitizer_common --strip=never
 build:sanitizer_common --copt=-fno-omit-frame-pointer
